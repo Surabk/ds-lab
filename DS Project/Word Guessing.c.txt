@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX_WORDS 5
+#define MAX_WORD_LENGTH 15
+
+int main() {
+    char wordBank[MAX_WORDS][MAX_WORD_LENGTH] = {
+        "apple", "banana", "orange", "grape", "strawberry"
+    };
+    
+    srand(time(NULL));  // Seed the random number generator
+    int randomIndex = rand() % MAX_WORDS;
+    char secretWord[MAX_WORD_LENGTH];
+    strcpy(secretWord, wordBank[randomIndex]);
+    
+    int wordLength = strlen(secretWord);
+    char guessedWord[wordLength];
+    for (int i = 0; i < wordLength; i++) {
+        guessedWord[i] = '_';
+    }
+    
+    int correctGuesses = 0;
+    int totalGuesses = 0;
+    int gameOver = 0;
+    
+    printf("Welcome to the Word Guessing Game!\n");
+    printf("Try to guess the letters in the word.\n");
+    
+    while (!gameOver) {
+        printf("\nCurrent word: ");
+        for (int i = 0; i < wordLength; i++) {
+            printf("%c ", guessedWord[i]);
+        }
+        printf("\n");
+        
+        char guess;
+        printf("Enter a letter: ");
+        scanf(" %c", &guess);
+        totalGuesses++;
+        
+        int found = 0;
+        for (int i = 0; i < wordLength; i++) {
+            if (secretWord[i] == guess && guessedWord[i] != guess) {
+                guessedWord[i] = guess;
+                found = 1;
+                correctGuesses++;
+            }
+        }
+        
+        if (found) {
+            printf("Correct guess!\n");
+        } else {
+            printf("Incorrect guess!\n");
+        }
+        
+        if (correctGuesses == wordLength) {
+            printf("\nCongratulations! You've guessed the word: %s\n", secretWord);
+            printf("Total guesses: %d\n", totalGuesses);
+            gameOver = 1;
+        }
+    }
+    
+    return 0;
+}
